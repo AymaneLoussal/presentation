@@ -1,0 +1,249 @@
+:root {
+    --bg-color: #030303;
+    --text-primary: #f0f0f0;
+    --text-secondary: #aaaaaa;
+    --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --transition-speed: 2s;
+    --delay-step: 1.2s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    overflow: hidden; 
+    width: 100vw;
+    height: 100vh;
+    cursor: default;
+}
+
+/* NAVIGATION */
+.progress-indicator {
+    position: fixed;
+    top: 40px;
+    right: 40px;
+    font-size: 0.8rem;
+    letter-spacing: 4px;
+    color: rgba(255, 255, 255, 0.3);
+    z-index: 100;
+    font-weight: 300;
+    transition: opacity 1s;
+}
+.hidden-nav { opacity: 0 !important; }
+
+/* GLOBAL OVERLAYS */
+#flash-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: white;
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.1s ease-out;
+}
+
+/* SCENES SETUP */
+.presentation-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+.scene {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.scene.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+}
+
+/* CUSTOM SCENE TRANSITIONS (Handled partly via JS class toggling) */
+.scene[data-transition="blur-reveal"] { transition: opacity 2s ease, filter 2s ease; filter: blur(20px); }
+.scene.active[data-transition="blur-reveal"] { filter: blur(0); }
+
+.scene[data-transition="fade"] { transition: opacity 2s ease; }
+.scene[data-transition="crossfade-slow"] { transition: opacity 3s ease; }
+.scene[data-transition="fade-dark"] { transition: opacity 4s ease; }
+
+.scene[data-transition="pan-right"] { transition: opacity 2s ease, transform 3s ease-out; transform: translateX(-3vw); }
+.scene.active[data-transition="pan-right"] { transform: translateX(0); }
+
+.scene[data-transition="glitch"] { transition: opacity 1s ease; }
+
+/* MEDIA BACKGROUNDS */
+.media-bg {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    background-color: var(--bg-color);
+}
+
+.bg-video, .bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.05);
+    opacity: 0.8;
+}
+
+/* Cinematic Camera Movements */
+.scene.active .slow-zoom-in { animation: slowZoomIn 20s linear forwards; }
+.scene.active .slow-zoom-out { animation: slowZoomOut 20s linear forwards; }
+.scene.active .cinematic-pan { animation: cinematicPan 25s ease-in-out alternate infinite; }
+.scene.active .majestic-pan { animation: majesticPan 30s ease-out forwards; }
+.scene.active .dynamic-zoom { animation: dynamicZoom 10s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+
+@keyframes slowZoomIn { from { transform: scale(1.05); } to { transform: scale(1.15); } }
+@keyframes slowZoomOut { from { transform: scale(1.15); } to { transform: scale(1.05); } }
+@keyframes cinematicPan { from { transform: scale(1.1) translateX(-2%); } to { transform: scale(1.1) translateX(2%); } }
+@keyframes majesticPan { from { transform: scale(1.1) translateY(2%); } to { transform: scale(1.15) translateY(-2%); } }
+@keyframes dynamicZoom { from { transform: scale(1.2); } to { transform: scale(1.05); } }
+
+/* Overlays */
+.overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%);
+}
+.dark-overlay { background: rgba(0, 0, 0, 0.7); }
+.gradient-overlay { background: radial-gradient(circle, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%); }
+.energetic-overlay { background: linear-gradient(45deg, rgba(10,0,20,0.5), rgba(0,0,0,0.4)); }
+.peak-overlay { background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.85) 100%); }
+.black-bg { background-color: #000; }
+.completely-black { background-color: #000; z-index: 20; }
+
+/* Special Effects */
+.scanline-effect::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 2;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+}
+
+/* CONTENT CONTAINERS */
+.content {
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    width: 85%;
+    max-width: 1400px;
+    padding: 2rem;
+}
+.side-content-left { text-align: left; margin-right: auto; margin-left: 8%; }
+.side-content-right { text-align: right; margin-left: auto; margin-right: 8%; }
+.center-content { text-align: center; }
+
+/* TYPOGRAPHY */
+h1 { font-size: clamp(2.5rem, 5vw, 6rem); font-weight: 700; letter-spacing: 6px; text-transform: uppercase; line-height: 1.1; }
+h2 { font-size: clamp(1.8rem, 3.5vw, 4rem); font-weight: 300; line-height: 1.3; letter-spacing: 2px; }
+h3 { font-size: clamp(1.2rem, 2vw, 2.5rem); font-weight: 300; letter-spacing: 3px; color: var(--text-secondary); text-transform: uppercase; }
+
+.title-text { letter-spacing: 12px; font-weight: 200; }
+.emphasis { font-style: italic; color: #fff; }
+.text-glow { text-shadow: 0 0 20px rgba(255,255,255,0.3); }
+.mt-2 { margin-top: 2rem; }
+.mt-3 { margin-top: 3rem; }
+
+/* Buttons */
+.enter-btn {
+    margin-top: 4rem;
+    padding: 15px 40px;
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    border: 1px solid rgba(255,255,255,0.2);
+    font-size: 0.9rem;
+    letter-spacing: 4px;
+    cursor: pointer;
+    transition: all 0.6s ease;
+    text-transform: uppercase;
+}
+.enter-btn:hover {
+    color: #fff;
+    border-color: #fff;
+    background: rgba(255,255,255,0.05);
+    box-shadow: 0 0 20px rgba(255,255,255,0.1);
+}
+
+/* Animations & Timings */
+.opacity-0 { opacity: 0; transform: translateY(20px); transition: opacity 2s ease, transform 2s ease; }
+.scene.active .opacity-0 { opacity: 1; transform: translateY(0); }
+
+.anim-text { opacity: 0; transform: translateY(15px); transition: opacity 2s ease, transform 2s ease, filter 2s ease; filter: blur(5px); }
+.scene.active .anim-text.revealed { opacity: 1; transform: translateY(0); filter: blur(0); }
+
+.blur-reveal { filter: blur(15px); transform: scale(1.05); }
+.scene.active .blur-reveal.revealed { filter: blur(0); transform: scale(1); }
+
+.pop { transform: scale(0.9); }
+.scene.active .pop.revealed { transform: scale(1); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+/* Tech Grid */
+.data-grid { display: flex; gap: 2rem; justify-content: center; opacity: 0; }
+.scene.active .data-grid.revealed { opacity: 1; }
+.data-item {
+    font-size: 0.9rem; letter-spacing: 3px; font-family: monospace;
+    border-top: 1px solid rgba(255,255,255,0.3); padding-top: 10px; color: rgba(255,255,255,0.6);
+}
+
+/* WAKE UP SCENE SPECIALS */
+#scene-09 { z-index: 50; }
+.hidden { display: none !important; }
+
+.glitch-text {
+    font-size: clamp(3rem, 8vw, 10rem);
+    color: white;
+    font-weight: 900;
+    letter-spacing: 15px;
+    position: relative;
+}
+
+/* Glitch animation applied via JS */
+.glitch-anim {
+    animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+}
+
+@keyframes glitch-skew {
+    0% { transform: skew(0deg); }
+    20% { transform: skew(-10deg); }
+    40% { transform: skew(10deg); text-shadow: -2px 0 red, 2px 0 cyan; }
+    60% { transform: skew(0deg); text-shadow: none; }
+    80% { transform: skew(5deg); }
+    100% { transform: skew(0deg); }
+}
+
+#final-text {
+    font-size: 1.5rem;
+    letter-spacing: 8px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.5);
+    opacity: 0;
+    transition: opacity 4s ease;
+}
+#final-text.revealed { opacity: 1; }
+
+.tension-fade.revealed {
+    animation: pulse-tension 4s infinite alternate;
+}
+@keyframes pulse-tension {
+    0% { opacity: 0.7; }
+    100% { opacity: 1; text-shadow: 0 0 15px rgba(255,255,255,0.5); }
+}

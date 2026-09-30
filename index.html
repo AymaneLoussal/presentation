@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dream School - Cinematic Experience</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="progress-indicator" id="progress">01 / 09</div>
+
+    <!-- Audio System -->
+    <!-- User's existing alarm -->
+    <audio id="sfx-alarm" src="assests/sounds/freesound_community-alarm-clock-short-6402.mp3" preload="auto"></audio>
+    
+    <!-- Suggested new audio files (See instructions for downloading) -->
+    <audio id="bgm-opening" src="assests/sounds/bgm_cinematic_opening.mp3" loop preload="auto"></audio>
+    <audio id="bgm-peak" src="assests/sounds/bgm_inspirational_peak.mp3" loop preload="auto"></audio>
+    <audio id="sfx-whoosh" src="assests/sounds/sfx_cinematic_whoosh.mp3" preload="auto"></audio>
+    <audio id="sfx-heartbeat" src="assests/sounds/sfx_heartbeat_slow.mp3" preload="auto"></audio>
+    <audio id="sfx-ambience-class" src="assests/sounds/sfx_classroom_ambience.mp3" loop preload="auto"></audio>
+
+    <!-- Overlay for flash transitions -->
+    <div id="flash-overlay"></div>
+
+    <main class="presentation-container">
+        
+        <!-- SCENE 01 — OPENING -->
+        <section class="scene active" id="scene-01" data-transition="fade">
+            <div class="content opening-content">
+                <h3 class="anim-step opacity-0">What is a school?</h3>
+                <h3 class="anim-step opacity-0 delay-2">A place to study?</h3>
+                <h1 class="anim-step opacity-0 delay-4 title-text">OR SOMETHING MORE?</h1>
+                <button id="enter-btn" class="enter-btn anim-step opacity-0 delay-6">ENTER THE DREAM</button>
+            </div>
+        </section>
+
+        <!-- SCENE 02 — DISCOVERY -->
+        <section class="scene" id="scene-02" data-transition="blur-reveal">
+            <div class="media-bg">
+                <video src="assests/videos/6214743-uhd_4096_2160_25fps.mp4" loop muted playsinline class="bg-video slow-zoom-in"></video>
+                <div class="overlay gradient-overlay"></div>
+            </div>
+            <div class="content cinematic-content">
+                <h2 class="anim-text">Imagine a school built for the future.</h2>
+            </div>
+        </section>
+
+        <!-- SCENE 03 — THE CAMPUS -->
+        <section class="scene" id="scene-03" data-transition="pan-right">
+            <div class="media-bg">
+                <img src="assests/images/pexels-dothanhyb-5530520.jpg" alt="The Campus" class="bg-image cinematic-pan">
+                <div class="overlay"></div>
+            </div>
+            <div class="content side-content-right">
+                <h2 class="anim-text">Not just walls and desks.</h2>
+                <h2 class="anim-text delay-2 emphasis">An ecosystem of ideas.</h2>
+            </div>
+        </section>
+
+        <!-- SCENE 04 — LEARNING -->
+        <section class="scene" id="scene-04" data-transition="fade">
+            <div class="media-bg">
+                <img src="assests/images/pexels-pavel-danilyuk-8423095.jpg" alt="Learning" class="bg-image slow-zoom-out">
+                <div class="overlay dark-overlay"></div>
+                <!-- Subtle floating dust particles for atmosphere -->
+                <div class="particles" id="dust-particles"></div>
+            </div>
+            <div class="content side-content-left">
+                <h2 class="anim-text">Learning shouldn't feel like an obligation.</h2>
+                <h1 class="anim-text delay-2 text-glow mt-2">IT SHOULD FEEL LIKE DISCOVERY.</h1>
+            </div>
+        </section>
+
+        <!-- SCENE 05 — TECHNOLOGY -->
+        <section class="scene" id="scene-05" data-transition="glitch">
+            <div class="media-bg">
+                <video src="assests/videos/8342695-uhd_3840_2160_25fps.mp4" loop muted playsinline class="bg-video scanline-effect"></video>
+                <div class="overlay tech-overlay"></div>
+            </div>
+            <div class="content tech-content">
+                <h2 class="anim-text">Technology shouldn't replace teachers.</h2>
+                <h3 class="anim-text delay-2 mt-2">It should give us new ways to see the world.</h3>
+                
+                <div class="data-grid anim-text delay-3">
+                    <div class="data-item">AI ASSIST</div>
+                    <div class="data-item">IMMERSIVE VR</div>
+                    <div class="data-item">GLOBAL LINK</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE 06 — LIFE / ENERGY -->
+        <section class="scene" id="scene-06" data-transition="flash">
+            <div class="media-bg">
+                <img src="assests/images/pexels-joaquinrr-38575482.jpg" alt="Life Outside" class="bg-image dynamic-zoom">
+                <div class="overlay energetic-overlay"></div>
+            </div>
+            <div class="content center-content">
+                <h2 class="anim-text">Because we are more than grades.</h2>
+                <div class="kinetic-words mt-3">
+                    <h1 class="anim-text pop delay-1">PASSION.</h1>
+                    <h1 class="anim-text pop delay-2">MOVEMENT.</h1>
+                    <h1 class="anim-text pop delay-3">CONNECTION.</h1>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE 07 — THE PERFECT SCHOOL (PEAK) -->
+        <section class="scene" id="scene-07" data-transition="crossfade-slow">
+            <div class="media-bg">
+                <img src="assests/images/pexels-thirdman-8927023.jpg" alt="Perfect School" class="bg-image majestic-pan">
+                <div class="overlay peak-overlay"></div>
+            </div>
+            <div class="content peak-content">
+                <h2 class="anim-text">This is the school I imagine.</h2>
+                <div class="montage-text mt-3">
+                    <h3 class="anim-text blur-reveal delay-2">Where we don't just learn about the world.</h3>
+                    <h1 class="anim-text blur-reveal delay-4 text-glow mt-2">WE LEARN HOW TO CHANGE IT.</h1>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE 08 — THE TENSION -->
+        <section class="scene" id="scene-08" data-transition="fade-dark">
+            <div class="media-bg black-bg"></div>
+            <div class="content tension-content">
+                <h2 class="anim-text fade-out-late">But...</h2>
+                <h2 class="anim-text delay-3 tension-fade mt-2">Is this reality?</h2>
+            </div>
+        </section>
+
+        <!-- SCENE 09 — ALARM / WAKE UP -->
+        <section class="scene" id="scene-09" data-transition="none">
+            <div class="media-bg completely-black"></div>
+            <div class="content wake-up-content">
+                <!-- Controlled strictly via JS timeline -->
+                <h1 class="glitch-text hidden" id="wake-up-text">WAKE UP.</h1>
+                <p class="hidden" id="final-text">It was just a dream.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
