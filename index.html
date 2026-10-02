@@ -1,147 +1,350 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Dream School - Cinematic Experience</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STARTS SCHOOL — The School I Would Build</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="progress-indicator" id="progress">01 / 09</div>
 
-    <!-- Audio System -->
-    <!-- User's existing alarm -->
-    <audio id="sfx-alarm" src="assests/sounds/freesound_community-alarm-clock-short-6402.mp3" preload="auto"></audio>
-    
-    <!-- Suggested new audio files (See instructions for downloading) -->
-    <audio id="bgm-opening" src="assests/sounds/bgm_cinematic_opening.mp3" loop preload="auto"></audio>
-    <audio id="bgm-peak" src="assests/sounds/bgm_inspirational_peak.mp3" loop preload="auto"></audio>
-    <audio id="sfx-whoosh" src="assests/sounds/sfx_cinematic_whoosh.mp3" preload="auto"></audio>
-    <audio id="sfx-heartbeat" src="assests/sounds/sfx_heartbeat_slow.mp3" preload="auto"></audio>
-    <audio id="sfx-ambience-class" src="assests/sounds/sfx_classroom_ambience.mp3" loop preload="auto"></audio>
+  <!-- ===== SOUNDS ===== -->
+  <audio id="sfx-click"  src="assests/sounds/matthewvakaliuk73627-mouse-click-290204.mp3"           preload="auto"></audio>
+  <audio id="sfx-alarm"  src="assests/sounds/freesound_community-alarm-clock-short-6402.mp3"         preload="auto"></audio>
 
-    <!-- Overlay for flash transitions -->
-    <div id="flash-overlay"></div>
+  <!-- ===== START SCREEN ===== -->
+  <div id="start-screen">
+    <div class="start-card">
+      <div class="start-logo">STARTS SCHOOL</div>
+      <p class="start-sub">A presentation by a student with a vision.</p>
+      <button id="start-btn">▶ &nbsp;BEGIN PRESENTATION</button>
+      <p class="start-hint">Use → / ← arrow keys, or click the buttons to navigate</p>
+    </div>
+  </div>
 
-    <main class="presentation-container">
-        
-        <!-- SCENE 01 — OPENING -->
-        <section class="scene active" id="scene-01" data-transition="fade">
-            <div class="content opening-content">
-                <h3 class="anim-step opacity-0">What is a school?</h3>
-                <h3 class="anim-step opacity-0 delay-2">A place to study?</h3>
-                <h1 class="anim-step opacity-0 delay-4 title-text">OR SOMETHING MORE?</h1>
-                <button id="enter-btn" class="enter-btn anim-step opacity-0 delay-6">ENTER THE DREAM</button>
-            </div>
-        </section>
+  <!-- ===== PRESENTATION ===== -->
+  <div id="presentation" class="hidden">
 
-        <!-- SCENE 02 — DISCOVERY -->
-        <section class="scene" id="scene-02" data-transition="blur-reveal">
-            <div class="media-bg">
-                <video src="assests/videos/6214743-uhd_4096_2160_25fps.mp4" loop muted playsinline class="bg-video slow-zoom-in"></video>
-                <div class="overlay gradient-overlay"></div>
-            </div>
-            <div class="content cinematic-content">
-                <h2 class="anim-text">Imagine a school built for the future.</h2>
-            </div>
-        </section>
+    <!-- PAGE 0 — Welcome -->
+    <section class="page" data-index="0">
+      <div class="page-bg" style="background-image: url('assests/images/school-exterior.jpg')"></div>
+      <div class="overlay overlay-dark"></div>
+      <div class="content content-left">
+        <p class="eyebrow">🏫 &nbsp;A student's dream</p>
+        <h1 class="display-title anim-up">WELCOME TO<br><span class="brand">STARTS SCHOOL</span></h1>
+        <p class="subtitle anim-up delay-1">The school I would build.</p>
+      </div>
+      <!-- Founder character floating on welcome page -->
+      <div class="founder-welcome anim-up delay-2">
+        <img src="assests/images/Gemini_Generated_Image_1wg10t1wg10t1wg1-removebg-preview.png" alt="School Founder" class="founder-img-welcome" />
+        <div class="founder-bubble">Presented by the founder 👋</div>
+      </div>
+    </section>
 
-        <!-- SCENE 03 — THE CAMPUS -->
-        <section class="scene" id="scene-03" data-transition="pan-right">
-            <div class="media-bg">
-                <img src="assests/images/pexels-dothanhyb-5530520.jpg" alt="The Campus" class="bg-image cinematic-pan">
-                <div class="overlay"></div>
-            </div>
-            <div class="content side-content-right">
-                <h2 class="anim-text">Not just walls and desks.</h2>
-                <h2 class="anim-text delay-2 emphasis">An ecosystem of ideas.</h2>
-            </div>
-        </section>
+    <!-- PAGE 1 — Meet the Founder -->
+    <section class="page" data-index="1">
+      <div class="page-bg" style="background-image: url('assests/images/school-exterior.jpg')"></div>
+      <div class="overlay overlay-founder"></div>
+      <div class="founder-split">
+        <!-- Left: founder character -->
+        <div class="founder-left anim-slide-left">
+          <img src="assests/images/founder.png" alt="School Founder" class="founder-img-big" />
+        </div>
+        <!-- Right: founder intro text -->
+        <div class="founder-right">
+          <p class="eyebrow anim-up">MEET THE FOUNDER</p>
+          <h1 class="section-title anim-up delay-1">THE VISION<br>BEHIND THE<br><span class="brand">SCHOOL</span></h1>
+          <p class="body-text anim-up delay-2">
+            Every school should be a place students <em>want</em> to go to.
+            A place where you learn, create, laugh, compete, and grow
+            — not just sit in a chair waiting for the bell.
+          </p>
+          <p class="founder-quote anim-up delay-3">
+            "If I could build a school,<br>it would look like <span class="brand">STARTS SCHOOL</span>."
+          </p>
+        </div>
+      </div>
+    </section>
 
-        <!-- SCENE 04 — LEARNING -->
-        <section class="scene" id="scene-04" data-transition="fade">
-            <div class="media-bg">
-                <img src="assests/images/pexels-pavel-danilyuk-8423095.jpg" alt="Learning" class="bg-image slow-zoom-out">
-                <div class="overlay dark-overlay"></div>
-                <!-- Subtle floating dust particles for atmosphere -->
-                <div class="particles" id="dust-particles"></div>
-            </div>
-            <div class="content side-content-left">
-                <h2 class="anim-text">Learning shouldn't feel like an obligation.</h2>
-                <h1 class="anim-text delay-2 text-glow mt-2">IT SHOULD FEEL LIKE DISCOVERY.</h1>
-            </div>
-        </section>
+    <!-- PAGE 2 — What is STARTS SCHOOL? -->
+    <section class="page" data-index="2">
+      <div class="page-bg" style="background-image: url('assests/images/school-interior.jpg')"></div>
+      <div class="overlay overlay-medium"></div>
+      <div class="content content-left">
+        <p class="eyebrow anim-up">THE CONCEPT</p>
+        <h1 class="section-title anim-up delay-1">WHAT IS<br>STARTS SCHOOL?</h1>
+        <div class="card-list anim-up delay-2">
+          <div class="chip">📚 Learning</div>
+          <div class="chip">🎨 Creativity</div>
+          <div class="chip">🤝 Friendship</div>
+          <div class="chip">⚽ Sports</div>
+          <div class="chip">🌱 Growth</div>
+        </div>
+        <p class="body-text anim-up delay-3">A high school where every student finds their passion — not just their grade.</p>
+      </div>
+      <div class="sticker sticker-br bounce">🐶</div>
+    </section>
 
-        <!-- SCENE 05 — TECHNOLOGY -->
-        <section class="scene" id="scene-05" data-transition="glitch">
-            <div class="media-bg">
-                <video src="assests/videos/8342695-uhd_3840_2160_25fps.mp4" loop muted playsinline class="bg-video scanline-effect"></video>
-                <div class="overlay tech-overlay"></div>
-            </div>
-            <div class="content tech-content">
-                <h2 class="anim-text">Technology shouldn't replace teachers.</h2>
-                <h3 class="anim-text delay-2 mt-2">It should give us new ways to see the world.</h3>
-                
-                <div class="data-grid anim-text delay-3">
-                    <div class="data-item">AI ASSIST</div>
-                    <div class="data-item">IMMERSIVE VR</div>
-                    <div class="data-item">GLOBAL LINK</div>
-                </div>
-            </div>
-        </section>
+    <!-- PAGE 2 — School Design -->
+    <section class="page" data-index="2">
+      <div class="page-bg" style="background-image: url('https://images.unsplash.com/photo-1562774053-701939374585?w=1600&q=80')"></div>
+      <div class="overlay overlay-dark"></div>
+      <div class="content content-center">
+        <p class="eyebrow anim-up">ARCHITECTURE & SPACE</p>
+        <h1 class="section-title anim-up delay-1">THE SCHOOL DESIGN</h1>
+        <div class="label-grid anim-up delay-2">
+          <div class="label-pill">🌿 Green Courtyard</div>
+          <div class="label-pill">📖 Open Library</div>
+          <div class="label-pill">🏟️ Sports Complex</div>
+          <div class="label-pill">🎭 Creative Studios</div>
+          <div class="label-pill">💻 Tech Wing</div>
+          <div class="label-pill">🍽️ Social Cafeteria</div>
+        </div>
+      </div>
+    </section>
 
-        <!-- SCENE 06 — LIFE / ENERGY -->
-        <section class="scene" id="scene-06" data-transition="flash">
-            <div class="media-bg">
-                <img src="assests/images/pexels-joaquinrr-38575482.jpg" alt="Life Outside" class="bg-image dynamic-zoom">
-                <div class="overlay energetic-overlay"></div>
-            </div>
-            <div class="content center-content">
-                <h2 class="anim-text">Because we are more than grades.</h2>
-                <div class="kinetic-words mt-3">
-                    <h1 class="anim-text pop delay-1">PASSION.</h1>
-                    <h1 class="anim-text pop delay-2">MOVEMENT.</h1>
-                    <h1 class="anim-text pop delay-3">CONNECTION.</h1>
-                </div>
-            </div>
-        </section>
+    <!-- PAGE 3 — Classrooms -->
+    <section class="page" data-index="3">
+      <div class="page-bg" style="background-image: url('assests/images/classroom-modern.jpg')"></div>
+      <div class="overlay overlay-medium"></div>
+      <div class="content content-left">
+        <p class="eyebrow anim-up">WHERE IT STARTS</p>
+        <h1 class="section-title anim-up delay-1">THE CLASSROOMS</h1>
+        <div class="feature-list anim-up delay-2">
+          <p>✅ Interactive smartboards</p>
+          <p>✅ Group-work desk layouts</p>
+          <p>✅ Computers in every room</p>
+          <p>✅ Natural light & plants</p>
+          <p>✅ Practical learning spaces</p>
+        </div>
+      </div>
+      <div class="sticker sticker-br float">😴<span class="sticker-label">8:00 AM...</span></div>
+    </section>
 
-        <!-- SCENE 07 — THE PERFECT SCHOOL (PEAK) -->
-        <section class="scene" id="scene-07" data-transition="crossfade-slow">
-            <div class="media-bg">
-                <img src="assests/images/pexels-thirdman-8927023.jpg" alt="Perfect School" class="bg-image majestic-pan">
-                <div class="overlay peak-overlay"></div>
-            </div>
-            <div class="content peak-content">
-                <h2 class="anim-text">This is the school I imagine.</h2>
-                <div class="montage-text mt-3">
-                    <h3 class="anim-text blur-reveal delay-2">Where we don't just learn about the world.</h3>
-                    <h1 class="anim-text blur-reveal delay-4 text-glow mt-2">WE LEARN HOW TO CHANGE IT.</h1>
-                </div>
-            </div>
-        </section>
+    <!-- PAGE 4 — Sports -->
+    <section class="page" data-index="4">
+      <div class="page-bg" style="background-image: url('assests/images/sports-field.jpg')"></div>
+      <div class="overlay overlay-dark"></div>
+      <div class="content content-center">
+        <p class="eyebrow anim-up">BODY & MIND</p>
+        <h1 class="section-title anim-up delay-1">SPORTS</h1>
+        <p class="pull-quote anim-up delay-2">"School isn't only about<br>sitting in a chair."</p>
+        <div class="chip-row anim-up delay-3">
+          <div class="chip">⚽ Football</div>
+          <div class="chip">🏀 Basketball</div>
+          <div class="chip">🏊 Swimming</div>
+          <div class="chip">🏋️ Fitness</div>
+        </div>
+      </div>
+      <div class="sticker sticker-tr bounce">🏃</div>
+    </section>
 
-        <!-- SCENE 08 — THE TENSION -->
-        <section class="scene" id="scene-08" data-transition="fade-dark">
-            <div class="media-bg black-bg"></div>
-            <div class="content tension-content">
-                <h2 class="anim-text fade-out-late">But...</h2>
-                <h2 class="anim-text delay-3 tension-fade mt-2">Is this reality?</h2>
-            </div>
-        </section>
+    <!-- PAGE 5 — Football Club -->
+    <section class="page" data-index="5">
+      <div class="page-bg" style="background-image: url('assests/images/club-football.jpg')"></div>
+      <div class="overlay overlay-dark"></div>
+      <div class="content content-left">
+        <p class="eyebrow anim-up">CLUBS</p>
+        <h1 class="section-title anim-up delay-1">⚽ FOOTBALL CLUB</h1>
+        <p class="body-text anim-up delay-2">Team training, tournaments, and the satisfying feeling of scoring the winning goal.</p>
+        <p class="funny-text anim-up delay-3">"Finally, a real football field." — Everyone</p>
+      </div>
+      <div class="sticker sticker-br bounce">🎉</div>
+    </section>
 
-        <!-- SCENE 09 — ALARM / WAKE UP -->
-        <section class="scene" id="scene-09" data-transition="none">
-            <div class="media-bg completely-black"></div>
-            <div class="content wake-up-content">
-                <!-- Controlled strictly via JS timeline -->
-                <h1 class="glitch-text hidden" id="wake-up-text">WAKE UP.</h1>
-                <p class="hidden" id="final-text">It was just a dream.</p>
-            </div>
-        </section>
+    <!-- PAGE 6 — Music Club -->
+    <section class="page" data-index="6">
+      <div class="page-bg" style="background-image: url('assests/images/club-music.jpg')"></div>
+      <div class="overlay overlay-medium"></div>
+      <div class="content content-left">
+        <p class="eyebrow anim-up">CLUBS</p>
+        <h1 class="section-title anim-up delay-1">🎵 MUSIC CLUB</h1>
+        <p class="body-text anim-up delay-2">Guitar, piano, drums, vocals — make noise for a good reason.</p>
+        <p class="funny-text anim-up delay-3">"The drum kit is not optional."</p>
+      </div>
+      <div class="sticker sticker-tr float">🎧</div>
+    </section>
 
-    </main>
+    <!-- PAGE 7 — Dance Club -->
+    <section class="page" data-index="7">
+      <div class="page-bg" style="background-image: url('https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=1600&q=80')"></div>
+      <div class="overlay overlay-dark"></div>
+      <div class="content content-left">
+        <p class="eyebrow anim-up">CLUBS</p>
+        <h1 class="section-title anim-up delay-1">💃 DANCE CLUB</h1>
+        <p class="body-text anim-up delay-2">Mirror walls, wooden floors, and zero judgment. Just move.</p>
+        <p class="funny-text anim-up delay-3">"You can't spell 'dance' without 'fun'." *(you technically can)*</p>
+      </div>
+      <div class="sticker sticker-br bounce">🕺</div>
+    </section>
 
-    <script src="script.js"></script>
+    <!-- PAGE 8 — Art Club -->
+    <section class="page" data-index="8">
+      <div class="page-bg" style="background-image: url('https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=1600&q=80')"></div>
+      <div class="overlay overlay-medium"></div>
+      <div class="content content-left">
+        <p class="eyebrow anim-up">CLUBS</p>
+        <h1 class="section-title anim-up delay-1">🎨 ART CLUB</h1>
+        <p class="body-text anim-up delay-2">Painting, drawing, sculpture, digital art. If you can imagine it — make it.</p>
+        <p class="funny-text anim-up delay-3">"Warning: you WILL get paint on your clothes."</p>
+      </div>
+      <div class="sticker sticker-tr float">🖌️</div>
+    </section>
+
+    <!-- PAGE 9 — Coding Club -->
+    <section class="page" data-index="9">
+      <div class="page-bg" style="background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1600&q=80')"></div>
+      <div class="overlay overlay-dark"></div>
+      <div class="content content-left">
+        <p class="eyebrow anim-up">CLUBS</p>
+        <h1 class="section-title anim-up delay-1">💻 CODING CLUB</h1>
+        <p class="body-text anim-up delay-2">Programming, robotics, web design, and trying to fix bugs at 11pm.</p>
+        <p class="funny-text anim-up delay-3 error-text">SyntaxError: Why isn't it working??</p>
+      </div>
+      <div class="sticker sticker-br float">🤯</div>
+    </section>
+
+    <!-- PAGE 10 — Gaming Club -->
+    <section class="page" data-index="10">
+      <div class="page-bg" style="background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1600&q=80')"></div>
+      <div class="overlay overlay-dark"></div>
+      <div class="content content-left">
+        <p class="eyebrow anim-up">CLUBS</p>
+        <h1 class="section-title anim-up delay-1">🎮 GAMING CLUB</h1>
+        <p class="body-text anim-up delay-2">Friendly esports competitions, strategy games, and cooperative play.</p>
+        <p class="funny-text anim-up delay-3">"Education through gaming. That's my argument and I'm sticking to it."</p>
+      </div>
+      <div class="sticker sticker-tr bounce">👾</div>
+    </section>
+
+    <!-- PAGE 11 — Cinema Club -->
+    <section class="page" data-index="11">
+      <div class="page-bg" style="background-image: url('https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1600&q=80')"></div>
+      <div class="overlay overlay-medium"></div>
+      <div class="content content-left">
+        <p class="eyebrow anim-up">CLUBS</p>
+        <h1 class="section-title anim-up delay-1">🎬 CINEMA CLUB</h1>
+        <p class="body-text anim-up delay-2">Write, film, edit, and screen your own short films. Lights, camera, action.</p>
+        <p class="funny-text anim-up delay-3">"Budget: \$0. Vision: unlimited."</p>
+      </div>
+      <div class="sticker sticker-br float">🎥</div>
+    </section>
+
+    <!-- PAGE 12 — Life at Starts School -->
+    <section class="page" data-index="12">
+      <div class="page-bg" style="background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1600&q=80')"></div>
+      <div class="overlay overlay-medium"></div>
+      <div class="content content-center">
+        <p class="eyebrow anim-up">BEYOND THE CLASSROOM</p>
+        <h1 class="section-title anim-up delay-1">LIFE AT STARTS SCHOOL</h1>
+        <p class="body-text anim-up delay-2 wide">Students should <em>enjoy</em> being at school — not just survive it. Lunch breaks that actually feel like a break. Outdoor spaces to breathe. A place to be yourself.</p>
+      </div>
+      <div class="sticker sticker-bl bounce">😄</div>
+      <div class="sticker sticker-tr float">🌮</div>
+    </section>
+
+    <!-- PAGE 13 — Music & Events -->
+    <section class="page" data-index="13">
+      <div class="page-bg" style="background-image: url('https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1600&q=80')"></div>
+      <div class="overlay overlay-dark"></div>
+      <div class="content content-center">
+        <p class="eyebrow anim-up">COMMUNITY</p>
+        <h1 class="section-title anim-up delay-1">MUSIC & EVENTS</h1>
+        <div class="chip-row anim-up delay-2">
+          <div class="chip">🎤 School Concert</div>
+          <div class="chip">🏆 Tournaments</div>
+          <div class="chip">🎭 Talent Show</div>
+          <div class="chip">🖼️ Art Exhibition</div>
+          <div class="chip">🎉 School Festival</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 14 — Technology -->
+    <section class="page" data-index="14">
+      <div class="page-bg" style="background-image: url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1600&q=80')"></div>
+      <div class="overlay overlay-dark"></div>
+      <div class="content content-left">
+        <p class="eyebrow anim-up">THE FUTURE</p>
+        <h1 class="section-title anim-up delay-1">TECHNOLOGY</h1>
+        <p class="body-text anim-up delay-2">Smart classrooms, robotics, 3D printing, and coding labs. Not sci-fi — just a school preparing students for the real world.</p>
+        <div class="feature-list anim-up delay-3">
+          <p>🤖 Robotics Lab</p>
+          <p>🖨️ 3D Printing Studio</p>
+          <p>🧠 AI & Data Literacy</p>
+          <p>📱 Digital Creative Tools</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 15 — Why I would build it this way -->
+    <section class="page" data-index="15">
+      <div class="page-bg why-bg"></div>
+      <div class="content content-center">
+        <p class="eyebrow anim-up">THE PHILOSOPHY</p>
+        <h1 class="section-title anim-up delay-1">WHY I WOULD<br>BUILD IT THIS WAY</h1>
+        <div class="pillars anim-up delay-2">
+          <div class="pillar">
+            <div class="pillar-icon">📚</div>
+            <h3>Learn</h3>
+            <p>Curiosity‑driven, hands‑on lessons</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">🎨</div>
+            <h3>Create</h3>
+            <p>Art, code, music — make something real</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">⚽</div>
+            <h3>Play</h3>
+            <p>Balance mind and body every day</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">🔭</div>
+            <h3>Discover</h3>
+            <p>Explore interests, try new things</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">🌱</div>
+            <h3>Grow</h3>
+            <p>Build confidence, character, teamwork</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 16 — Sunset -->
+    <section class="page" data-index="16" id="sunset-page">
+      <div class="page-bg" style="background-image: url('https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1600&q=80')"></div>
+      <div class="overlay overlay-warm"></div>
+      <div class="content content-center">
+        <h1 class="display-title anim-up"><span class="brand">THIS IS<br>STARTS SCHOOL.</span></h1>
+        <p class="subtitle anim-up delay-1">A school I would love to build.</p>
+        <p class="anim-up delay-3 continue-hint">( press → to continue )</p>
+      </div>
+    </section>
+
+    <!-- PAGE 17 — Wake Up -->
+    <section class="page" data-index="17" id="wakeup-page">
+      <div class="page-bg wakeup-bg"></div>
+      <div class="content content-center">
+        <h1 class="wakeup-title" id="wakeup-text">WAKE UP.</h1>
+        <p class="wakeup-sub" id="wakeup-sub">Maybe one day.</p>
+      </div>
+    </section>
+
+  </div><!-- /presentation -->
+
+  <!-- NAV BUTTONS -->
+  <button class="nav-btn" id="prevBtn" aria-label="Previous">&#8592;</button>
+  <button class="nav-btn" id="nextBtn" aria-label="Next">&#8594;</button>
+
+  <!-- PAGE COUNTER -->
+  <div id="page-counter"><span id="cur-page">1</span> / <span id="tot-pages">19</span></div>
+
+  <script src="script.js"></script>
 </body>
 </html>

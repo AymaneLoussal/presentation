@@ -1,220 +1,208 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const scenes = document.querySelectorAll('.scene');
-    const totalScenes = scenes.length;
-    const progressIndicator = document.getElementById('progress');
-    const enterBtn = document.getElementById('enter-btn');
-    const flashOverlay = document.getElementById('flash-overlay');
-    
-    // Audio Elements
-    const sfxAlarm = document.getElementById('sfx-alarm');
-    const bgmOpening = document.getElementById('bgm-opening');
-    const bgmPeak = document.getElementById('bgm-peak');
-    const sfxWhoosh = document.getElementById('sfx-whoosh');
-    const sfxHeartbeat = document.getElementById('sfx-heartbeat');
-    const sfxClassroom = document.getElementById('sfx-ambience-class');
+/* =========================================================
+   STARTS SCHOOL — script.js
+   Navigation · Audio · Animations · Wake-Up sequence
+   ========================================================= */
 
-    let currentSceneIndex = 0;
-    let presentationStarted = false;
-    let isTransitioning = false;
-    let textRevealTimeouts = [];
-    
-    // Attempt to set volumes
-    if(bgmOpening) bgmOpening.volume = 0.4;
-    if(bgmPeak) bgmPeak.volume = 0.5;
-    if(sfxHeartbeat) sfxHeartbeat.volume = 0.8;
-    if(sfxClassroom) sfxClassroom.volume = 0.2;
+'use strict';
 
-    // Start presentation
-    enterBtn.addEventListener('click', () => {
-        presentationStarted = true;
-        
-        // Play cinematic whoosh and start opening BGM
-        playSound(sfxWhoosh);
-        playSound(bgmOpening);
-        
-        nextScene();
-    });
+/* ── DOM references ── */
+const startScreen   = document.getElementById('start-screen');
+const startBtn      = document.getElementById('start-btn');
+const presentation  = document.getElementById('presentation');
+const pages         = Array.from(document.querySelectorAll('.page'));
+const prevBtn       = document.getElementById('prevBtn');
+const nextBtn       = document.getElementById('nextBtn');
+const curPageEl     = document.getElementById('cur-page');
+const totPagesEl    = document.getElementById('tot-pages');
+const sfxClick      = document.getElementById('sfx-click');
+const sfxAlarm      = document.getElementById('sfx-alarm');
 
-    // Navigation
-    window.addEventListener('wheel', (e) => {
-        if (!presentationStarted || isTransitioning) return;
-        if (e.deltaY > 0) nextScene();
-        else if (e.deltaY < 0) prevScene();
-    });
+/* ── State ── */
+let current          = 0;
+const TOTAL          = pages.length;
+const SUNSET_INDEX   = TOTAL - 2;   // second-to-last page (index 17)
+const WAKEUP_INDEX   = TOTAL - 1;   // last page (index 18)
 
-    window.addEventListener('keydown', (e) => {
-        if (!presentationStarted || isTransitioning) return;
-        if (['ArrowDown', 'ArrowRight', ' '].includes(e.key)) nextScene();
-        else if (['ArrowUp', 'ArrowLeft'].includes(e.key)) prevScene();
-    });
+let navigating       = false;       // debounce guard
 
-    function playSound(audioEl) {
-        if(audioEl && audioEl.readyState >= 2) {
-            audioEl.currentTime = 0;
-            audioEl.play().catch(() => {});
-        }
+/* ── Initialise counter ── */
+totPagesEl.textContent = TOTAL;
+
+/* ─────────────────────────────────────────────
+   START BUTTON
+   ───────────────────────────────────────────── */
+startBtn.addEventListener('click', () => {
+  /* Unlock audio context (must be inside user gesture) */
+  [sfxClick, sfxAlarm].forEach(a => { a.load(); });
+
+  startScreen.style.transition = 'opacity .6s ease';
+  startScreen.style.opacity = '0';
+  setTimeout(() => {
+    startScreen.style.display = 'none';
+    presentation.classList.remove('hidden');
+    prevBtn.style.display  = 'block';
+    nextBtn.style.display  = 'block';
+    document.getElementById('page-counter').style.display = 'block';
+    activatePage(0, 'none');
+  }, 650);
+});
+
+/* ─────────────────────────────────────────────
+   PAGE ACTIVATION
+   ───────────────────────────────────────────── */
+function activatePage(index, direction) {
+  if (index < 0 || index >= TOTAL) return;
+
+  const prev = pages[current];
+  const next = pages[index];
+
+  /* Deactivate current */
+  if (prev) {
+    prev.classList.remove('active');
+    if (direction === 'forward') prev.classList.add('exit-left');
+    setTimeout(() => prev.classList.remove('exit-left'), 700);
+    pausePageMedia(prev);
+  }
+
+  current = index;
+
+  /* Activate next */
+  next.classList.add('active');
+  updateCounter();
+  playPageMedia(next);
+
+  /* Special pages */
+  if (index === WAKEUP_INDEX) triggerWakeUp();
+
+  /* Reset navigating guard after transition */
+  setTimeout(() => { navigating = false; }, 700);
+}
+
+/* ─────────────────────────────────────────────
+   NAVIGATION
+   ───────────────────────────────────────────── */
+function goNext() {
+  if (navigating) return;
+  navigating = true;
+  playClick();
+  activatePage(current + 1, 'forward');
+}
+
+function goPrev() {
+  if (navigating || current === 0) return;
+  navigating = true;
+  playClick();
+  activatePage(current - 1, 'back');
+}
+
+nextBtn.addEventListener('click', goNext);
+prevBtn.addEventListener('click', goPrev);
+
+document.addEventListener('keydown', e => {
+  if (startScreen.style.display === 'none' || !startScreen.style.display) {
+    /* start screen still visible — skip */
+    if (!presentation.classList.contains('hidden')) {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') goNext();
+      if (e.key === 'ArrowLeft'  || e.key === 'PageUp')   goPrev();
     }
+  }
+});
 
-    function stopSound(audioEl) {
-        if(audioEl) {
-            // Fade out effect
-            let vol = audioEl.volume;
-            let fade = setInterval(() => {
-                if (vol > 0.05) {
-                    vol -= 0.05;
-                    audioEl.volume = vol;
-                } else {
-                    audioEl.pause();
-                    audioEl.volume = 1; // reset for next time
-                    clearInterval(fade);
-                }
-            }, 100);
-        }
-    }
+/* Touch / swipe support */
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 50) {
+    if (dx < 0) goNext();
+    else        goPrev();
+  }
+});
 
-    function updateProgress() {
-        const sceneNum = currentSceneIndex + 1;
-        progressIndicator.textContent = `0${sceneNum} / 0${totalScenes}`;
-        if (currentSceneIndex === 0 || currentSceneIndex >= totalScenes - 2) {
-            progressIndicator.classList.add('hidden-nav');
-        } else {
-            progressIndicator.classList.remove('hidden-nav');
-        }
-    }
+/* ─────────────────────────────────────────────
+   PAGE COUNTER
+   ───────────────────────────────────────────── */
+function updateCounter() {
+  curPageEl.textContent = current + 1;
+}
 
-    function handleMedia(scene) {
-        // Pause all videos
-        document.querySelectorAll('.bg-video').forEach(v => v.pause());
-        // Play current video
-        const currentVideo = scene.querySelector('.bg-video');
-        if (currentVideo) currentVideo.play().catch(()=>{});
+/* ─────────────────────────────────────────────
+   MEDIA (videos / auto-play images)
+   ───────────────────────────────────────────── */
+function playPageMedia(page) {
+  const vid = page.querySelector('video');
+  if (vid) { vid.currentTime = 0; vid.play().catch(() => {}); }
+}
 
-        // Handle Audio Contexts per scene
-        if(scene.id === 'scene-04') playSound(sfxClassroom);
-        else stopSound(sfxClassroom);
+function pausePageMedia(page) {
+  const vid = page.querySelector('video');
+  if (vid) vid.pause();
+}
 
-        if(scene.id === 'scene-07') {
-            stopSound(bgmOpening);
-            playSound(bgmPeak);
-        }
+/* ─────────────────────────────────────────────
+   SOUND HELPERS
+   ───────────────────────────────────────────── */
+function playClick() {
+  if (!sfxClick) return;
+  sfxClick.currentTime = 0;
+  sfxClick.volume = 0.7;
+  sfxClick.play().catch(() => {});
+}
 
-        if(scene.id === 'scene-08') {
-            stopSound(bgmPeak);
-            playSound(sfxHeartbeat);
-        }
-    }
+function playAlarm() {
+  if (!sfxAlarm) return;
+  sfxAlarm.currentTime = 0;
+  sfxAlarm.volume = 1;
+  sfxAlarm.play().catch(() => {});
+}
 
-    function triggerFlash() {
-        flashOverlay.style.opacity = '1';
-        playSound(sfxWhoosh);
-        setTimeout(() => { flashOverlay.style.opacity = '0'; }, 150);
-    }
+/* ─────────────────────────────────────────────
+   WAKE-UP SEQUENCE
+   ───────────────────────────────────────────── */
+function triggerWakeUp() {
+  const title = document.getElementById('wakeup-text');
+  const sub   = document.getElementById('wakeup-sub');
 
-    function revealTextSequentially(scene) {
-        // Clear previous timeouts
-        textRevealTimeouts.forEach(clearTimeout);
-        textRevealTimeouts = [];
+  /* Reset */
+  title.classList.remove('show');
+  sub.classList.remove('show');
 
-        // Hide all anim-texts first
-        scene.querySelectorAll('.anim-text').forEach(el => el.classList.remove('revealed'));
+  /* Flash white */
+  flash();
 
-        // Find delays (delay-1, delay-2, etc. using data attributes or classes)
-        // For simplicity, we parse the class list
-        const textElements = scene.querySelectorAll('.anim-text');
-        textElements.forEach(el => {
-            let delayTime = 500; // Base delay
-            
-            if (el.classList.contains('delay-1')) delayTime = 1000;
-            if (el.classList.contains('delay-2')) delayTime = 2000;
-            if (el.classList.contains('delay-3')) delayTime = 3000;
-            if (el.classList.contains('delay-4')) delayTime = 4000;
+  /* Alarm after flash */
+  setTimeout(() => {
+    playAlarm();
+  }, 350);
 
-            const t = setTimeout(() => {
-                el.classList.add('revealed');
-            }, delayTime);
-            textRevealTimeouts.push(t);
-        });
-    }
+  /* Show WAKE UP text */
+  setTimeout(() => {
+    title.classList.add('show');
+  }, 500);
 
-    function triggerAlarmSequence() {
-        // Stop all background audio instantly
-        [bgmOpening, bgmPeak, sfxHeartbeat, sfxClassroom].forEach(a => {
-            if(a) { a.pause(); a.currentTime = 0; }
-        });
-        
-        const wakeUpText = document.getElementById('wake-up-text');
-        const finalText = document.getElementById('final-text');
-        
-        // 3 SECONDS OF COMPLETE SILENCE
-        setTimeout(() => {
-            // ALARM
-            if (sfxAlarm) {
-                sfxAlarm.currentTime = 0;
-                sfxAlarm.volume = 1;
-                sfxAlarm.play().catch(()=>{});
-            }
+  /* Show sub-text */
+  setTimeout(() => {
+    sub.classList.add('show');
+  }, 1600);
+}
 
-            // FLASH BANG
-            flashOverlay.style.background = 'white';
-            flashOverlay.style.opacity = '1';
-            setTimeout(() => { flashOverlay.style.opacity = '0'; }, 100);
+/* White flash overlay */
+function flash() {
+  let overlay = document.getElementById('flash-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'flash-overlay';
+    document.body.appendChild(overlay);
+  }
+  overlay.style.opacity = '1';
+  setTimeout(() => { overlay.style.opacity = '0'; }, 180);
+}
 
-            // GLITCH TEXT
-            wakeUpText.classList.remove('hidden');
-            wakeUpText.classList.add('glitch-anim');
-            
-            setTimeout(() => {
-                wakeUpText.classList.remove('glitch-anim');
-                wakeUpText.classList.add('hidden');
-                
-                setTimeout(() => {
-                    finalText.classList.remove('hidden');
-                    // Need a slight delay before adding 'revealed' for CSS transition to work
-                    setTimeout(() => finalText.classList.add('revealed'), 50);
-                    
-                    // Stop alarm after a bit
-                    setTimeout(() => { if(sfxAlarm) stopSound(sfxAlarm); }, 3000);
-                }, 1500);
-            }, 1500);
-            
-        }, 3000); 
-    }
-
-    function goToScene(index) {
-        if (index < 0 || index >= totalScenes) return;
-        isTransitioning = true;
-        
-        const currentScene = scenes[currentSceneIndex];
-        const targetScene = scenes[index];
-
-        // Custom transition handling before switching
-        if (targetScene.dataset.transition === 'flash') triggerFlash();
-
-        currentScene.classList.remove('active');
-        currentSceneIndex = index;
-        
-        setTimeout(() => {
-            targetScene.classList.add('active');
-            handleMedia(targetScene);
-            updateProgress();
-            revealTextSequentially(targetScene);
-            
-            if (targetScene.id === 'scene-09') {
-                triggerAlarmSequence();
-            }
-            
-            setTimeout(() => { isTransitioning = false; }, 2000);
-        }, 600); // Crossfade gap
-    }
-
-    function nextScene() {
-        if (currentSceneIndex < totalScenes - 1) goToScene(currentSceneIndex + 1);
-    }
-
-    function prevScene() {
-        if (currentSceneIndex === totalScenes - 1) return; // Don't go back from ending
-        if (currentSceneIndex > 0) goToScene(currentSceneIndex - 1);
-    }
-
-    updateProgress();
+/* ─────────────────────────────────────────────
+   KEYBOARD SHORTCUT HINT on Start Screen
+   ───────────────────────────────────────────── */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !presentation.classList.contains('hidden') === false) {
+    startBtn.click();
+  }
 });
