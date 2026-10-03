@@ -20,8 +20,8 @@ const sfxAlarm      = document.getElementById('sfx-alarm');
 /* ── State ── */
 let current          = 0;
 const TOTAL          = pages.length;
-const SUNSET_INDEX   = TOTAL - 2;   // second-to-last page (index 17)
-const WAKEUP_INDEX   = TOTAL - 1;   // last page (index 18)
+const SUNSET_INDEX   = TOTAL - 3;   // third-to-last page (index 17)   // second-to-last page (index 17)
+const WAKEUP_INDEX   = TOTAL - 2;   // second-to-last page (index 18)   // last page (index 18)
 
 let navigating       = false;       // debounce guard
 
@@ -131,7 +131,21 @@ function updateCounter() {
    ───────────────────────────────────────────── */
 function playPageMedia(page) {
   const vid = page.querySelector('video');
-  if (vid) { vid.currentTime = 0; vid.play().catch(() => {}); }
+  if (vid) {
+    if (vid.dataset.playOnce === 'true') {
+      if (vid.dataset.hasPlayed === 'true') return;
+      vid.dataset.hasPlayed = 'true';
+      vid.muted = false;
+      vid.volume = 1;
+      vid.play().catch(() => {});
+      return;
+    }
+
+    vid.currentTime = 0;
+    vid.muted = false;
+    vid.volume = 1;
+    vid.play().catch(() => {});
+  }
 }
 
 function pausePageMedia(page) {
@@ -206,3 +220,4 @@ document.addEventListener('keydown', e => {
     startBtn.click();
   }
 });
+

@@ -373,6 +373,17 @@ html, body {
   gap: 4px;
 }
 
+.sticker-img {
+  width: clamp(150px, 19vw, 215px);
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.sticker-img-sm {
+  width: clamp(125px, 15vw, 165px);
+}
+
 .sticker-label {
   font-family: 'Caveat', cursive;
   font-size: clamp(.65rem, 1.2vw, .95rem);
@@ -517,10 +528,55 @@ html, body {
 @media (max-width: 768px) {
   .content { padding: 40px 28px; }
   .pillar   { width: 130px; padding: 20px 14px; }
+  .sticker-img { width: clamp(120px, 25vw, 175px); }
+  .sticker-img-sm { width: clamp(105px, 21vw, 140px); }
   .sticker-br, .sticker-bl, .sticker-tr, .sticker-tl { font-size: 2.4rem; }
   .sticker-br { bottom: 90px; right: 24px; }
   .sticker-bl { bottom: 90px; left: 24px; }
   .sticker-tr { top: 16px;   right: 24px; }
+}
+
+/* Photography slide: keep the presenter beside and vertically aligned with the copy. */
+.photography-page .content {
+  width: calc(100% - clamp(170px, 11vw, 220px));
+  margin-left: clamp(170px, 11vw, 220px);
+  padding: 64px 32px;
+}
+
+.photography-sticker {
+  top: 50%;
+  right: auto;
+  bottom: auto;
+  left: 36px;
+  transform: translateY(-50%);
+}
+
+.photography-sticker .sticker-img {
+  width: clamp(210px, 20vw, 320px);
+}
+
+.coding-sticker .sticker-img {
+  width: clamp(220px, 22vw, 300px);
+}
+
+@media (max-width: 768px) {
+  .photography-page .content {
+    width: calc(100% - 170px);
+    margin-left: 170px;
+    padding: 40px 18px;
+  }
+
+  .photography-sticker {
+    left: 8px;
+  }
+
+  .photography-sticker .sticker-img {
+    width: clamp(135px, 25vw, 190px);
+  }
+
+  .coding-sticker .sticker-img {
+    width: clamp(165px, 28vw, 220px);
+  }
 }
 
 /* =========================================================
@@ -668,3 +724,36 @@ html, body {
   .founder-img-welcome { width: 140px; }
 }
 
+
+/* =========================================================
+   VIDEO SECTION
+   ========================================================= */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.showcase-video {
+  width: 100%;
+  border-radius: var(--radius);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+  background: #000;
+  outline: none;
+}
+
+/* =========================================================
+   VIDEO BACKGROUND
+   ========================================================= */
+.page-video-bg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
