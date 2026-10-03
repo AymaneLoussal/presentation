@@ -34,6 +34,8 @@ totPagesEl.textContent = TOTAL;
 startBtn.addEventListener('click', () => {
   /* Unlock audio context (must be inside user gesture) */
   [sfxClick, sfxAlarm].forEach(a => { a.load(); });
+  loadPageBackground(pages[0]);
+  loadPageBackground(pages[1]);
 
   startScreen.style.transition = 'opacity .6s ease';
   startScreen.style.opacity = '0';
@@ -55,6 +57,8 @@ function activatePage(index, direction) {
 
   const prev = pages[current];
   const next = pages[index];
+  loadPageBackground(next);
+  loadPageBackground(pages[index + 1]);
 
   /* Deactivate current */
   if (prev) {
@@ -76,6 +80,17 @@ function activatePage(index, direction) {
 
   /* Reset navigating guard after transition */
   setTimeout(() => { navigating = false; }, 700);
+}
+
+function loadPageBackground(page) {
+  const bg = page?.querySelector('.page-bg');
+  if (!bg || bg.dataset.backgroundLoaded === 'true') return;
+
+  const src = bg.dataset.backgroundImage;
+  if (!src) return;
+
+  bg.style.backgroundImage = `url("${src}")`;
+  bg.dataset.backgroundLoaded = 'true';
 }
 
 /* ─────────────────────────────────────────────
